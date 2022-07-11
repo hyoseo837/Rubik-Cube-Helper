@@ -5,17 +5,6 @@ nowCube = cube("414414431113323113623433663466646246555551555221265222")
 targetCube.prt()
 ans = []
 
-f = open("cmap_6.txt","r")
-while True:
-    data = f.readline()
-    if data[0:54] == nowCube.save():
-        ans.append(data[-2])
-        nowCube.move(data[-2])
-        break
-    if data == "":
-        break
-f.close()
-
 f = open("cmap_5.txt","r")
 while True:
     data = f.readline()

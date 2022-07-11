@@ -22,7 +22,7 @@ def iter(ccc, n, p,count):
 
 moves = ["U","u","D","d","L","l","R","r","F","f","B","b"]
 
-for great in range(7):
+for great in range(6):
     f = open(f"cmap_{great}.txt","w")
     kkk = cube()
     iter(kkk, great, -2,0)
