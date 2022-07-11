@@ -1,14 +1,16 @@
 class cube:
-
+    
     colors = [];
+
     def __init__(self,string = "111111111222222222333333333444444444555555555666666666"):
+        self.colors = [];
         for i in range(54):
             self.colors.append(string[i])
     
     def save(self):
         save_string = ""
         for i in self.colors:
-            save_string =+ i
+            save_string += i
         return save_string
 
     def prt(self):
@@ -120,8 +122,8 @@ class cube:
             tmp = (self.colors[0],self.colors[3],self.colors[6])
             (self.colors[0],self.colors[3],self.colors[6]) = (self.colors[44],self.colors[41],self.colors[38])
             (self.colors[44],self.colors[41],self.colors[38]) = (self.colors[45],self.colors[48],self.colors[51])
-            (self.colors[45],self.colors[48],self.colors[51]) = (self.colors[24],self.colors[21],self.colors[18])
-            (self.colors[24],self.colors[21],self.colors[18]) = tmp
+            (self.colors[45],self.colors[48],self.colors[51]) = (self.colors[18],self.colors[21],self.colors[24])
+            (self.colors[18],self.colors[21],self.colors[24]) = tmp
         if code == 'l':
             n = 9
             tmp = self.colors[n]
@@ -137,8 +139,8 @@ class cube:
             self.colors[n+3] = tmp
 
             tmp = (self.colors[0],self.colors[3],self.colors[6])
-            (self.colors[0],self.colors[3],self.colors[6]) = (self.colors[24],self.colors[21],self.colors[18])
-            (self.colors[24],self.colors[21],self.colors[18]) = (self.colors[45],self.colors[48],self.colors[51])
+            (self.colors[0],self.colors[3],self.colors[6]) = (self.colors[18],self.colors[21],self.colors[24])
+            (self.colors[18],self.colors[21],self.colors[24]) = (self.colors[45],self.colors[48],self.colors[51])
             (self.colors[45],self.colors[48],self.colors[51]) = (self.colors[44],self.colors[41],self.colors[38])
             (self.colors[44],self.colors[41],self.colors[38]) = tmp
 
