@@ -2,7 +2,7 @@ class cube:
     
     colors = [];
 
-    def __init__(self,string = "111111111222222222333333333444444444555555555666666666"):
+    def __init__(self,string = "000000000111111111222222222333333333444444444555555555"):
         self.colors = [];
         for i in range(54):
             self.colors.append(string[i])
@@ -264,7 +264,7 @@ class cube:
 
 
 if __name__ == "__main__":
-    foo = cube("WWWWWWWWWOOOOOOOOOGGGGGGGGGRRRRRRRRRBBBBBBBBBYYYYYYYYY")
+    foo = cube("000000000111111111222222222333333333444444444555555555")
     foo.prt()
     moves = input()
     for i in moves:
