@@ -33,10 +33,8 @@ class Move_button(button):
         H = self.textSurf.get_height()
         self.image.blit(self.textSurf, [width/2 - W/2, height/2 - H/2])
 
-
-
 MOVES = ["U","u","D","d","L","l","R","r","F","f","B","b"]
-cube = cube_class.cube()
+cube = cube_class.cube(input())
 
 pygame.init()
 
