@@ -3,8 +3,9 @@ import os
 location = os.path.dirname(os.path.abspath(__file__))
 import cube_class
 from ui_classes import *
+import input
 
-cube = cube_class.cube()
+cube = cube_class.cube(input.export())
 
 pygame.init()
 
@@ -17,7 +18,6 @@ pygame.display.set_caption("cube solver")
 clock = pygame.time.Clock()
 background = pygame.image.load("images/background.png")
 
-colors = [(230,230,230),(255, 88, 0),(0, 155, 72),(183, 18, 52),(0, 70, 173),(255, 213, 0)]
 # coordinate data
 UP_colors = [[(275,50),(318,75),(275,100),(232,75)],[(318,75),(362,100),(318,125),(275,100)],[(362,100),(405,125),(362,150),(318,125)]
 ,[(232,75),(275,100),(232,125),(188,100)],[(275,100),(318,125),(275,150),(232,125)],[(318,125),(362,150),(318,175),(275,150)]
@@ -40,8 +40,10 @@ LEFT_colors = [[(461,283),(475,275),(475,292),(461,300)],[(446,292),(461,283),(4
 
 
 
-viewButton = button("Viewbutton", (60,85), 30, 30)
+viewButton = button("viewbutton", (60,85), 30, 30)
 viewButton.setImage("images/viewButton.png")
+importButton = button("importButton", (60,435), 30, 30)
+importButton.setImage("images/importButton.png")
 
 buttons = []
 for i in range(12):
@@ -67,6 +69,8 @@ while running:
                     cube.move(MOVES[button.id])
             if viewButton.check(mouse):
                 viewmod = (viewmod + 1)%2;
+            if importButton.check(mouse):
+                cube = cube_class.cube(input.export())
 
     U_color = cube.colors[0:9]
     L_color = cube.colors[9:18]
@@ -126,6 +130,7 @@ while running:
         screen.blit(button.image, button.pos)
     screen.blit(cubeCanvas, (50,75))
     screen.blit(viewButton.image, viewButton.pos)
+    screen.blit(importButton.image, importButton.pos)
 
     # Update Screen
     pygame.display.update()

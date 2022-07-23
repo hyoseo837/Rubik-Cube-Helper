@@ -1,12 +1,13 @@
 import pygame
 
 MOVES = ["U","u","D","d","L","l","R","r","F","f","B","b"]
+colors = [(230,230,230),(255, 88, 0),(0, 155, 72),(183, 18, 52),(0, 70, 173),(255, 213, 0)]
 
 class button():
     def __init__(self,name,pos,width,height):
         self.name = name
         self.pos = pos
-        self.size = [width,height]
+        self.size = (width,height)
         self.image = pygame.Surface((width,height))
 
     def setImage(self,path):
