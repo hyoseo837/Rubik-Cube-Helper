@@ -5,7 +5,7 @@ import cube_class
 from ui_classes import *
 import input
 
-cube = cube_class.cube(input.export())
+cube = cube_class.cube()
 
 pygame.init()
 
@@ -44,12 +44,22 @@ viewButton = button("viewbutton", (60,85), 30, 30)
 viewButton.setImage("images/viewButton.png")
 importButton = button("importButton", (60,435), 30, 30)
 importButton.setImage("images/importButton.png")
+turn_Buttons = []
+turn_Buttons.append(button("turnR", (570,260), 20, 20))
+turn_Buttons.append(button("turnL", (60,260), 20, 20))
+turn_Buttons.append(button("turnU", (315,85), 20, 20))
+turn_Buttons[0].setImage("images/turnR.png")
+turn_Buttons[1].setImage("images/turnL.png")
+turn_Buttons[2].setImage("images/turnU.png")
+
 
 buttons = []
 for i in range(12):
-    buttons.append(Move_button(i,(610+(i//2)*50,150+50*(i%2)),40,40))
+    buttons.append(Move_button(i,(620+(i//2)*60,85+50*(i%2)),40,40))
 
 viewmod = 0
+sides = [0,1,2,3,4,5]
+face_order = [[0,1,2,3,4,5,6,7,8],[0,1,2,3,4,5,6,7,8],[0,1,2,3,4,5,6,7,8],[0,1,2,3,4,5,6,7,8],[0,1,2,3,4,5,6,7,8],[0,1,2,3,4,5,6,7,8]]
 
 running = True
 while running:
@@ -64,6 +74,7 @@ while running:
         
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse = pygame.mouse.get_pos()
+            # print(mouse)
             for button in buttons:
                 if button.check(mouse):
                     cube.move(MOVES[button.id])
@@ -71,58 +82,49 @@ while running:
                 viewmod = (viewmod + 1)%2;
             if importButton.check(mouse):
                 cube = cube_class.cube(input.export())
+                pygame.display.set_mode((screen_width,screen_height))
+            if turn_Buttons[0].check(mouse):
+                sides = [sides[0],sides[4],sides[1],sides[2],sides[3],sides[5]]
+                face_order[0] = [face_order[0][2],face_order[0][5],face_order[0][8],face_order[0][1],face_order[0][4],face_order[0][7],face_order[0][0],face_order[0][3],face_order[0][6]]
+                face_order[5] = [face_order[5][2],face_order[5][5],face_order[5][8],face_order[5][1],face_order[5][4],face_order[5][7],face_order[5][0],face_order[5][3],face_order[5][6]]
+            if turn_Buttons[1].check(mouse):
+                sides = [sides[0],sides[2],sides[3],sides[4],sides[1],sides[5]]
+            if turn_Buttons[2].check(mouse):
+                sides = [sides[2],sides[1],sides[5],sides[3],sides[0],sides[4]]
 
-    U_color = cube.colors[0:9]
-    L_color = cube.colors[9:18]
-    F_color = cube.colors[18:27]
-    R_color = cube.colors[27:36]
-    B_color = cube.colors[36:45]
-    D_color = cube.colors[45:54]
-
-    for i in range(9):
-        U_color[i] = int(U_color[i])
-        L_color[i] = int(L_color[i])
-        F_color[i] = int(F_color[i])
-        R_color[i] = int(R_color[i])
-        D_color[i] = int(D_color[i])
-        B_color[i] = int(B_color[i])
+    display_color = [int(x) for x in cube.colors]
     
 
     if viewmod == 0: # 3D
         for i in range(9):
-            pygame.draw.polygon(cubeCanvas, colors[U_color[i]], UP_colors[i])
+            pygame.draw.polygon(cubeCanvas, colors[display_color[9*sides[0]+i]], UP_colors[face_order[0][i]])
             pygame.draw.polygon(cubeCanvas, (0,0,0), UP_colors[i],2)
-            pygame.draw.polygon(cubeCanvas, colors[L_color[i]], LEFT_colors[i])
+            pygame.draw.polygon(cubeCanvas, colors[display_color[9*sides[1]+i]], LEFT_colors[face_order[1][i]])
             pygame.draw.polygon(cubeCanvas, (0,0,0), LEFT_colors[i],2)
-            pygame.draw.polygon(cubeCanvas, colors[F_color[i]], FRONT_colors[i])
+            pygame.draw.polygon(cubeCanvas, colors[display_color[9*sides[2]+i]], FRONT_colors[face_order[2][i]])
             pygame.draw.polygon(cubeCanvas, (0,0,0), FRONT_colors[i],2)
-            pygame.draw.polygon(cubeCanvas, colors[R_color[i]], RIGHT_colors[i])
+            pygame.draw.polygon(cubeCanvas, colors[display_color[9*sides[3]+i]], RIGHT_colors[face_order[3][i]])
             pygame.draw.polygon(cubeCanvas, (0,0,0), RIGHT_colors[i],2)
-            pygame.draw.polygon(cubeCanvas, colors[D_color[i]], DOWN_colors[i])
-            pygame.draw.polygon(cubeCanvas, (0,0,0), DOWN_colors[i],2)
-            pygame.draw.polygon(cubeCanvas, colors[B_color[i]], BACK_colors[i])
+            pygame.draw.polygon(cubeCanvas, colors[display_color[9*sides[4]+i]], BACK_colors[face_order[4][i]])
             pygame.draw.polygon(cubeCanvas, (0,0,0), BACK_colors[i],2)
-            pygame.draw.line(cubeCanvas, (10,10,10), (475,325), (475,375),width=3)
-            pygame.draw.line(cubeCanvas, (10,10,10), (475,325), (432,300),width=3)
-            pygame.draw.line(cubeCanvas, (10,10,10), (475,325), (518,300),width=3)
+            pygame.draw.polygon(cubeCanvas, colors[display_color[9*sides[5]+i]], DOWN_colors[face_order[5][i]])
+            pygame.draw.polygon(cubeCanvas, (0,0,0), DOWN_colors[i],2)
+        pygame.draw.line(cubeCanvas, (10,10,10), (475,325), (475,375),width=3)
+        pygame.draw.line(cubeCanvas, (10,10,10), (475,325), (432,300),width=3)
+        pygame.draw.line(cubeCanvas, (10,10,10), (475,325), (518,300),width=3)
     else:
         for i in range(9):
-            pygame.draw.polygon(cubeCanvas, colors[U_color[i]], [(175+30*(i%3), 45+30*(i//3)),(205+30*(i%3), 45+30*(i//3)),(205+30*(i%3), 75+30*(i//3)),(175+30*(i%3), 75+30*(i//3))])
+            pygame.draw.polygon(cubeCanvas, colors[display_color[9*0 + i]], [(175+30*(i%3), 45+30*(i//3)),(205+30*(i%3), 45+30*(i//3)),(205+30*(i%3), 75+30*(i//3)),(175+30*(i%3), 75+30*(i//3))])
             pygame.draw.polygon(cubeCanvas, (0,0,0), [(175+30*(i%3), 45+30*(i//3)),(205+30*(i%3), 45+30*(i//3)),(205+30*(i%3), 75+30*(i//3)),(175+30*(i%3), 75+30*(i//3))],2)
-
-            pygame.draw.polygon(cubeCanvas, colors[L_color[i]], [(65+30*(i%3), 155+30*(i//3)),(95+30*(i%3), 155+30*(i//3)),(95+30*(i%3), 185+30*(i//3)),(65+30*(i%3), 185+30*(i//3))])
+            pygame.draw.polygon(cubeCanvas, colors[display_color[9*1 + i]], [(65+30*(i%3), 155+30*(i//3)),(95+30*(i%3), 155+30*(i//3)),(95+30*(i%3), 185+30*(i//3)),(65+30*(i%3), 185+30*(i//3))])
             pygame.draw.polygon(cubeCanvas, (0,0,0), [(65+30*(i%3), 155+30*(i//3)),(95+30*(i%3), 155+30*(i//3)),(95+30*(i%3), 185+30*(i//3)),(65+30*(i%3), 185+30*(i//3))],2)
-
-            pygame.draw.polygon(cubeCanvas, colors[F_color[i]], [(175+30*(i%3), 155+30*(i//3)),(205+30*(i%3), 155+30*(i//3)),(205+30*(i%3), 185+30*(i//3)),(175+30*(i%3), 185+30*(i//3))])
+            pygame.draw.polygon(cubeCanvas, colors[display_color[9*2 + i]], [(175+30*(i%3), 155+30*(i//3)),(205+30*(i%3), 155+30*(i//3)),(205+30*(i%3), 185+30*(i//3)),(175+30*(i%3), 185+30*(i//3))])
             pygame.draw.polygon(cubeCanvas, (0,0,0), [(175+30*(i%3), 155+30*(i//3)),(205+30*(i%3), 155+30*(i//3)),(205+30*(i%3), 185+30*(i//3)),(175+30*(i%3), 185+30*(i//3))],2)
-
-            pygame.draw.polygon(cubeCanvas, colors[R_color[i]], [(285+30*(i%3), 155+30*(i//3)),(315+30*(i%3), 155+30*(i//3)),(315+30*(i%3), 185+30*(i//3)),(285+30*(i%3), 185+30*(i//3))])
+            pygame.draw.polygon(cubeCanvas, colors[display_color[9*3 + i]], [(285+30*(i%3), 155+30*(i//3)),(315+30*(i%3), 155+30*(i//3)),(315+30*(i%3), 185+30*(i//3)),(285+30*(i%3), 185+30*(i//3))])
             pygame.draw.polygon(cubeCanvas, (0,0,0), [(285+30*(i%3), 155+30*(i//3)),(315+30*(i%3), 155+30*(i//3)),(315+30*(i%3), 185+30*(i//3)),(285+30*(i%3), 185+30*(i//3))],2)
-
-            pygame.draw.polygon(cubeCanvas, colors[B_color[i]], [(395+30*(i%3), 155+30*(i//3)),(425+30*(i%3), 155+30*(i//3)),(425+30*(i%3), 185+30*(i//3)),(395+30*(i%3), 185+30*(i//3))])
+            pygame.draw.polygon(cubeCanvas, colors[display_color[9*4 + i]], [(395+30*(i%3), 155+30*(i//3)),(425+30*(i%3), 155+30*(i//3)),(425+30*(i%3), 185+30*(i//3)),(395+30*(i%3), 185+30*(i//3))])
             pygame.draw.polygon(cubeCanvas, (0,0,0), [(395+30*(i%3), 155+30*(i//3)),(425+30*(i%3), 155+30*(i//3)),(425+30*(i%3), 185+30*(i//3)),(395+30*(i%3), 185+30*(i//3))],2)
-
-            pygame.draw.polygon(cubeCanvas, colors[D_color[i]], [(175+30*(i%3), 265+30*(i//3)),(205+30*(i%3), 265+30*(i//3)),(205+30*(i%3), 295+30*(i//3)),(175+30*(i%3), 295+30*(i//3))])
+            pygame.draw.polygon(cubeCanvas, colors[display_color[9*5 + i]], [(175+30*(i%3), 265+30*(i//3)),(205+30*(i%3), 265+30*(i//3)),(205+30*(i%3), 295+30*(i//3)),(175+30*(i%3), 295+30*(i//3))])
             pygame.draw.polygon(cubeCanvas, (0,0,0), [(175+30*(i%3), 265+30*(i//3)),(205+30*(i%3), 265+30*(i//3)),(205+30*(i%3), 295+30*(i//3)),(175+30*(i%3), 295+30*(i//3))],2)
 
     screen.blit(background,(0,0))
@@ -131,6 +133,8 @@ while running:
     screen.blit(cubeCanvas, (50,75))
     screen.blit(viewButton.image, viewButton.pos)
     screen.blit(importButton.image, importButton.pos)
+    for button in turn_Buttons:
+        screen.blit(button.image, button.pos)
 
     # Update Screen
     pygame.display.update()
