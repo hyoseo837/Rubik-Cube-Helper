@@ -1,5 +1,6 @@
 import pygame
 from ui_classes import button, colors
+import check
 
 coordinates = [(190,45),(80,155),(190,155),(300,155),(410,155),(190,265)]
 
@@ -21,8 +22,9 @@ def export():
     screen = pygame.display.set_mode((screen_width, screen_height))
 
     pygame.display.set_caption("Rubik's Cube Helper _ input")
-
     clock = pygame.time.Clock()
+
+    aafont = pygame.font.get_fonts()
 
     submit = button("Submit", (470,330), 100, 40)
     submit.setImage("images/submit.png")
@@ -30,9 +32,9 @@ def export():
     cube = []
     for i in range(6):
         for j in range(9):
-            if j == 4:
-                cube.append(face(9*i+j,i,(coordinates[i][0]+30*(j%3), coordinates[i][1]+30*(j//3)),True))
-                continue
+            # if j == 4:
+            #     cube.append(face(9*i+j,i,(coordinates[i][0]+30*(j%3), coordinates[i][1]+30*(j//3)),True))
+            #     continue
             cube.append(face(9*i+j,i,(coordinates[i][0]+30*(j%3), coordinates[i][1]+30*(j//3)),False))
 
     background = pygame.image.load("images/input_background.png")
@@ -40,7 +42,7 @@ def export():
     while running:
 
         dt = clock.tick(30)
-
+        txt = ""
         for event in pygame.event.get():
             
             if event.type == pygame.QUIT:
@@ -61,7 +63,10 @@ def export():
         screen.blit(background, (0, 0))
         for i in cube:
             screen.blit(i.image, i.pos)
-        screen.blit(submit.image, submit.pos)
+            txt += str(i.color)
+
+        if check.check(txt):
+            screen.blit(submit.image, submit.pos)
         
         pygame.display.update() 
 

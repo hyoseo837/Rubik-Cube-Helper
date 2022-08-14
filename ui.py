@@ -5,7 +5,7 @@ import cube_class
 from ui_classes import *
 import input
 
-cube = cube_class.cube()
+cube = cube_class.cube(input.export())
 
 pygame.init()
 
