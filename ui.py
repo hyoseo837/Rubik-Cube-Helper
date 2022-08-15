@@ -3,9 +3,14 @@ import os
 location = os.path.dirname(os.path.abspath(__file__))
 import cube_class
 from ui_classes import *
-import input
+from input import export
+from mysolver import mysolve
 
-cube = cube_class.cube(input.export())
+init = input()
+if len(init) == 54:
+    cube = cube_class.cube(init)
+else:
+    cube = cube_class.cube()
 
 pygame.init()
 
@@ -16,6 +21,7 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("cube solver")
 
 clock = pygame.time.Clock()
+solution = []
 background = pygame.image.load("images/background.png")
 
 COORDINATE_DATA = \
@@ -46,13 +52,16 @@ viewButton = button("viewbutton", (60,85), 30, 30)
 viewButton.setImage("images/viewButton.png")
 importButton = button("importButton", (60,435), 30, 30)
 importButton.setImage("images/importButton.png")
-# turn_Buttons = []
-# turn_Buttons.append(button("turnR", (570,260), 20, 20))
-# turn_Buttons.append(button("turnL", (60,260), 20, 20))
-# turn_Buttons.append(button("turnU", (315,85), 20, 20))
-# turn_Buttons[0].setImage("images/turnR.png")
-# turn_Buttons[1].setImage("images/turnL.png")
-# turn_Buttons[2].setImage("images/turnU.png")
+
+aafont = pygame.font.SysFont("Helvetica", 17)
+
+turn_Buttons = []
+turn_Buttons.append(button("turnX", (500,85), 20, 20))
+turn_Buttons.append(button("turnY", (530,85), 20, 20))
+turn_Buttons.append(button("turnZ", (560,85), 20, 20))
+turn_Buttons[0].setImage("images/turnX.png")
+turn_Buttons[1].setImage("images/turnY.png")
+turn_Buttons[2].setImage("images/turnZ.png")
 
 
 buttons = []
@@ -60,7 +69,6 @@ for i in range(12):
     buttons.append(Move_button(i,(620+(i//2)*60,85+50*(i%2)),40,40))
 
 viewmod = 0
-sides = [0,1,2,3,4,5]
 running = True
 while running:
 
@@ -74,29 +82,43 @@ while running:
         
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse = pygame.mouse.get_pos()
-            # print(mouse)
+            print(mouse)
+            if mouse[0] > 830 and mouse[0] < 940 and mouse[1] > 310 and mouse[1] < 325:
+                solution = mysolve(cube.save())
             for button in buttons:
                 if button.check(mouse):
                     cube.move(MOVES[button.id])
             if viewButton.check(mouse):
                 viewmod = (viewmod + 1)%2;
             if importButton.check(mouse):
-                cube = cube_class.cube(input.export())
+                cube = cube_class.cube(export())
                 pygame.display.set_mode((screen_width,screen_height))
-            # if turn_Buttons[0].check(mouse):
-                # sides = [sides[0],sides[4],sides[1],sides[2],sides[3],sides[5]]
-            # if turn_Buttons[1].check(mouse):
-                # sides = [sides[0],sides[2],sides[3],sides[4],sides[1],sides[5]]
-            # if turn_Buttons[2].check(mouse):
-                # sides = [sides[2],sides[1],sides[5],sides[3],sides[0],sides[4]]
+            if turn_Buttons[0].check(mouse):
+                cube.move("X")
+            if turn_Buttons[1].check(mouse):
+                cube.move("Y")
+            if turn_Buttons[2].check(mouse):
+                cube.move("Z")
 
     display_color = [int(x) for x in cube.colors]
     
+    solution_background = pygame.image.load("images/Solution_screen.png")
+    solution_text = aafont.render("  ".join(solution[:17]), 1, (0,0,0))
+    solution_background.blit(solution_text, (15,45))
+    if len(solution)> 15:
+        solution_text = aafont.render("  ".join(solution[17:34]), 1, (0,0,0))
+        solution_background.blit(solution_text, (15,70))
+        if len(solution)> 30:
+            solution_text = aafont.render("  ".join(solution[34:51]), 1, (0,0,0))
+            solution_background.blit(solution_text, (15,95))
+            if len(solution)> 45:
+                solution_text = aafont.render("  ".join(solution[51:68]), 1, (0,0,0))
+                solution_background.blit(solution_text, (15,120))
 
     if viewmod == 0: # 3D
         for x in range(6):
             for i in range(9):
-                pygame.draw.polygon(cubeCanvas, colors[display_color[9*sides[x]+i]], COORDINATE_DATA[9*x+i])
+                pygame.draw.polygon(cubeCanvas, colors[display_color[9*x+i]], COORDINATE_DATA[9*x+i])
                 pygame.draw.polygon(cubeCanvas, (0,0,0), COORDINATE_DATA[9*x+i],2)
         pygame.draw.line(cubeCanvas, (10,10,10), (475,325), (475,375),width=3)
         pygame.draw.line(cubeCanvas, (10,10,10), (475,325), (432,300),width=3)
@@ -115,10 +137,11 @@ while running:
     for button in buttons:
         screen.blit(button.image, button.pos)
     screen.blit(cubeCanvas, (50,75))
+    screen.blit(solution_background, (650,300))
     screen.blit(viewButton.image, viewButton.pos)
     screen.blit(importButton.image, importButton.pos)
-    # for button in turn_Buttons:
-        # screen.blit(button.image, button.pos)
+    for button in turn_Buttons:
+        screen.blit(button.image, button.pos)
 
     # Update Screen
     pygame.display.update()

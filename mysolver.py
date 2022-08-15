@@ -16,43 +16,46 @@ def mysolve(string):
     # print(" ".join(opt))
 
     result = []
-    for i in range(len(opt)):
-        if i[-1] == "i":
-            opt[i] = opt[i][0].lower()
-
     for i in opt:
         if i == "M":
             result.append("R")
-            result.append("l")
-            result.append("x")
+            result.append("Li")
+            result.append("Xi")
             continue
-        if i == "m":
-            result.append("r")
+        if i == "Mi":
+            result.append("Ri")
             result.append("L")
             result.append("X")
             continue
         if i == "E":
             result.append("U")
-            result.append("d")
-            result.append("y")
+            result.append("Di")
+            result.append("Yi")
             continue
-        if i == "e":
-            result.append("u")
+        if i == "Ei":
+            result.append("Ui")
             result.append("D")
             result.append("Y")
             continue
         if i == "S":
-            result.append("f")
+            result.append("Fi")
             result.append("B")
             result.append("Z")
             continue
-        if i == "s":
+        if i == "Si":
             result.append("F")
-            result.append("b")
-            result.append("z")
+            result.append("Bi")
+            result.append("Zi")
             continue
         result.append(i)
+    result = optimize.optimize_moves(result)
+    for i in range(len(result)):
+        if result[i][-1] == "i":
+            result[i] = result[i][0].lower()
+
+    return result
 
 
 if __name__ == "__main__":
     kkkk = cb("302200325030112041201123032411533355544444314205552154")
+    print(" ".join(mysolve("302200325030112041201123032411533355544444314205552154")))

@@ -291,9 +291,9 @@ class cube:
             self.colors[34] = self.colors[32]
             self.colors[32] = tmp
         if code == "x":
-            self.rotate("X")
-            self.rotate("X")
-            self.rotate("X")
+            self.move("X")
+            self.move("X")
+            self.move("X")
             
         if code == "Y":
             tmp = self.colors[9:18]
@@ -322,18 +322,18 @@ class cube:
             self.colors[52] = self.colors[48]
             self.colors[48] = tmp
         if code == "y":
-            self.rotate("Y")
-            self.rotate("Y")
-            self.rotate("Y")
+            self.move("Y")
+            self.move("Y")
+            self.move("Y")
         
         if code == "Z":
-            self.rotate("x")
-            self.rotate("y")
-            self.rotate("X")
+            self.move("x")
+            self.move("y")
+            self.move("X")
         if code == "z":
-            self.rotate("Z")
-            self.rotate("Z")
-            self.rotate("Z")
+            self.move("Z")
+            self.move("Z")
+            self.move("Z")
             
 
 if __name__ == "__main__":

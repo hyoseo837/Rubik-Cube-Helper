@@ -26,7 +26,7 @@ class Move_button(button):
         self.id = moveID
         self.text = MOVES[moveID]
 
-        self.font = pygame.font.SysFont("Arial", 20)
+        self.font = pygame.font.SysFont("Arial", 15)
         self.textSurf = self.font.render(self.text,1, (255,255,255))
         self.image = pygame.Surface((width, height))
         pygame.draw.rect(self.image, (100,100,100), (0,0,width,height))
