@@ -22,6 +22,7 @@ pygame.display.set_caption("cube solver")
 
 clock = pygame.time.Clock()
 solution = []
+page = 0;
 background = pygame.image.load("images/background.png")
 
 COORDINATE_DATA = \
@@ -69,6 +70,7 @@ for i in range(12):
     buttons.append(Move_button(i,(620+(i//2)*60,85+50*(i%2)),40,40))
 
 viewmod = 0
+shift = False
 running = True
 while running:
 
@@ -82,9 +84,16 @@ while running:
         
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse = pygame.mouse.get_pos()
-            print(mouse)
+            # print(mouse)
             if mouse[0] > 830 and mouse[0] < 940 and mouse[1] > 310 and mouse[1] < 325:
                 solution = mysolve(cube.save())
+                page = 0
+            if mouse[0] > 650 and mouse[0] < 670 and mouse[1] > 450 and mouse[1] < 470:
+                if page != 0:
+                    page -= 1
+            if mouse[0] > 930 and mouse[0] < 950 and mouse[1] > 450 and mouse[1] < 470:
+                if len(solution) > (page)*68:
+                    page += 1
             for button in buttons:
                 if button.check(mouse):
                     cube.move(MOVES[button.id])
@@ -99,20 +108,63 @@ while running:
                 cube.move("Y")
             if turn_Buttons[2].check(mouse):
                 cube.move("Z")
+        
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_LSHIFT or event.key == pygame.K_RSHIFT:
+                shift = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_f:
+                if shift:
+                    cube.move("F")
+                else:
+                    cube.move("f")
+            if event.key == pygame.K_b:
+                if shift:
+                    cube.move("B")
+                else:
+                    cube.move("b")
+            if event.key == pygame.K_l:
+                if shift:
+                    cube.move("L")
+                else:
+                    cube.move("l")
+            if event.key == pygame.K_r:
+                if shift:
+                    cube.move("R")
+                else:
+                    cube.move("r")
+            if event.key == pygame.K_u:
+                if shift:
+                    cube.move("U")
+                else:
+                    cube.move("u")
+            if event.key == pygame.K_d:
+                if shift:
+                    cube.move("D")
+                else:
+                    cube.move("d")
+            if event.key == pygame.K_x:
+                    cube.move("X")
+            if event.key == pygame.K_y:
+                    cube.move("Y")
+            if event.key == pygame.K_z:
+                    cube.move("Z")
+            if event.key == pygame.K_LSHIFT:
+                    shift = True
 
     display_color = [int(x) for x in cube.colors]
     
     solution_background = pygame.image.load("images/Solution_screen.png")
-    solution_text = aafont.render("  ".join(solution[:17]), 1, (0,0,0))
+    solution_text = aafont.render("  ".join(solution[page*68:page*68+17]), 1, (0,0,0))
     solution_background.blit(solution_text, (15,45))
     if len(solution)> 15:
-        solution_text = aafont.render("  ".join(solution[17:34]), 1, (0,0,0))
+        solution_text = aafont.render("  ".join(solution[page*68+17:page*68+34]), 1, (0,0,0))
         solution_background.blit(solution_text, (15,70))
         if len(solution)> 30:
-            solution_text = aafont.render("  ".join(solution[34:51]), 1, (0,0,0))
+            solution_text = aafont.render("  ".join(solution[page*68+34:page*68+51]), 1, (0,0,0))
             solution_background.blit(solution_text, (15,95))
             if len(solution)> 45:
-                solution_text = aafont.render("  ".join(solution[51:68]), 1, (0,0,0))
+                solution_text = aafont.render("  ".join(solution[page*68+51:page*68+68]), 1, (0,0,0))
                 solution_background.blit(solution_text, (15,120))
 
     if viewmod == 0: # 3D
