@@ -6,11 +6,7 @@ from ui_classes import *
 from input import export
 from mysolver import mysolve
 
-init = input()
-if len(init) == 54:
-    cube = cube_class.cube(init)
-else:
-    cube = cube_class.cube()
+cube = cube_class.cube()
 
 pygame.init()
 
@@ -64,6 +60,8 @@ turn_Buttons[0].setImage("images/turnX.png")
 turn_Buttons[1].setImage("images/turnY.png")
 turn_Buttons[2].setImage("images/turnZ.png")
 
+output_button = button("output", (560,435), 30, 30)
+output_button.setImage("images/outputButton.png")
 
 buttons = []
 for i in range(12):
@@ -95,62 +93,22 @@ while running:
                 if len(solution) > (page)*68:
                     page += 1
             for button in buttons:
-                if button.check(mouse):
+                if button.pressed(mouse):
                     cube.move(MOVES[button.id])
-            if viewButton.check(mouse):
+            if viewButton.pressed(mouse):
                 viewmod = (viewmod + 1)%2;
-            if importButton.check(mouse):
+            if importButton.pressed(mouse):
                 cube = cube_class.cube(export())
                 pygame.display.set_mode((screen_width,screen_height))
-            if turn_Buttons[0].check(mouse):
+            if output_button.pressed(mouse):
+                print(cube.save())
+            if turn_Buttons[0].pressed(mouse):
                 cube.move("X")
-            if turn_Buttons[1].check(mouse):
+            if turn_Buttons[1].pressed(mouse):
                 cube.move("Y")
-            if turn_Buttons[2].check(mouse):
+            if turn_Buttons[2].pressed(mouse):
                 cube.move("Z")
         
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_LSHIFT or event.key == pygame.K_RSHIFT:
-                shift = False
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_f:
-                if shift:
-                    cube.move("F")
-                else:
-                    cube.move("f")
-            if event.key == pygame.K_b:
-                if shift:
-                    cube.move("B")
-                else:
-                    cube.move("b")
-            if event.key == pygame.K_l:
-                if shift:
-                    cube.move("L")
-                else:
-                    cube.move("l")
-            if event.key == pygame.K_r:
-                if shift:
-                    cube.move("R")
-                else:
-                    cube.move("r")
-            if event.key == pygame.K_u:
-                if shift:
-                    cube.move("U")
-                else:
-                    cube.move("u")
-            if event.key == pygame.K_d:
-                if shift:
-                    cube.move("D")
-                else:
-                    cube.move("d")
-            if event.key == pygame.K_x:
-                    cube.move("X")
-            if event.key == pygame.K_y:
-                    cube.move("Y")
-            if event.key == pygame.K_z:
-                    cube.move("Z")
-            if event.key == pygame.K_LSHIFT:
-                    shift = True
 
     display_color = [int(x) for x in cube.colors]
     
@@ -192,6 +150,7 @@ while running:
     screen.blit(solution_background, (650,300))
     screen.blit(viewButton.image, viewButton.pos)
     screen.blit(importButton.image, importButton.pos)
+    screen.blit(output_button.image, output_button.pos)
     for button in turn_Buttons:
         screen.blit(button.image, button.pos)
 

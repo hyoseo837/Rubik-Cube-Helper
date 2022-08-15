@@ -28,6 +28,9 @@ def export():
 
     submit = button("Submit", (470,330), 100, 40)
     submit.setImage("images/submit.png")
+    
+    txt_button = button("import as txt", (20,350), 30, 30)
+    txt_button.setImage("images/importButton.png")
 
     cube = []
     for i in range(6):
@@ -49,14 +52,19 @@ def export():
                 running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse = pygame.mouse.get_pos()
-                if submit.check(mouse):
+                if submit.pressed(mouse):
                     running = False
                     result = ""
                     for i in cube:
                         result += str(i.color)
                     return result
+                if txt_button.pressed(mouse):
+                    text = input("enter here : ")
+                    if len(text) != 54:
+                        continue
+                    return text
                 for i in cube:
-                    if i.check(mouse) and i.fixed == False:
+                    if i.pressed(mouse):
                         i.color = (i.color + 1) %6
                         pygame.draw.rect(i.image, colors[i.color], (0,0,28,28))
 
@@ -67,7 +75,8 @@ def export():
 
         if check.check(txt):
             screen.blit(submit.image, submit.pos)
-        
+
+        screen.blit(txt_button.image, txt_button.pos)
         pygame.display.update() 
 
     pygame.quit()

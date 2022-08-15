@@ -14,7 +14,7 @@ class button():
     def setImage(self,path):
         self.image = pygame.image.load(path)
         
-    def check(self,cdn):
+    def pressed(self,cdn):
         if cdn[0] > self.pos[0] and cdn[0] < self.pos[0] + self.size[0] and cdn[1] > self.pos[1] and cdn[1] < self.pos[1] + self.size[1]:
             return True
         else: 
