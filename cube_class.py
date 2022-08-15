@@ -263,8 +263,81 @@ class cube:
             (self.colors[35],self.colors[32],self.colors[29]) = tmp
 
 
+
+        if code == "X":
+            tmp = self.colors[0:9]
+            self.colors[0:9] = self.colors[18:27]
+            self.colors[18:27] = self.colors[45:54]
+            self.colors[45:54] = [self.colors[44],self.colors[43],self.colors[42],self.colors[41],self.colors[40],self.colors[39],self.colors[38],self.colors[37],self.colors[36]]
+            [self.colors[44],self.colors[43],self.colors[42],self.colors[41],self.colors[40],self.colors[39],self.colors[38],self.colors[37],self.colors[36]] = tmp
+            tmp = self.colors[9]
+            self.colors[9] = self.colors[11]
+            self.colors[11] = self.colors[17]
+            self.colors[17] = self.colors[15]
+            self.colors[15] = tmp
+            tmp = self.colors[10]
+            self.colors[10] = self.colors[14]
+            self.colors[14] = self.colors[16]
+            self.colors[16] = self.colors[12]
+            self.colors[12] = tmp
+            tmp = self.colors[27]
+            self.colors[27] = self.colors[33]
+            self.colors[33] = self.colors[35]
+            self.colors[35] = self.colors[29]
+            self.colors[29] = tmp
+            tmp = self.colors[28]
+            self.colors[28] = self.colors[30]
+            self.colors[30] = self.colors[34]
+            self.colors[34] = self.colors[32]
+            self.colors[32] = tmp
+        if code == "x":
+            self.rotate("X")
+            self.rotate("X")
+            self.rotate("X")
+            
+        if code == "Y":
+            tmp = self.colors[9:18]
+            self.colors[9:18] = self.colors[18:27]
+            self.colors[18:27] = self.colors[27:36]
+            self.colors[27:36] = self.colors[36:45]
+            self.colors[36:45] = tmp
+            tmp = self.colors[0]
+            self.colors[0] = self.colors[6]
+            self.colors[6] = self.colors[8]
+            self.colors[8] = self.colors[2]
+            self.colors[2] = tmp
+            tmp = self.colors[1]
+            self.colors[1] = self.colors[3]
+            self.colors[3] = self.colors[7]
+            self.colors[7] = self.colors[5]
+            self.colors[5] = tmp
+            tmp = self.colors[45]
+            self.colors[45] = self.colors[47]
+            self.colors[47] = self.colors[53]
+            self.colors[53] = self.colors[51]
+            self.colors[51] = tmp
+            tmp = self.colors[46]
+            self.colors[46] = self.colors[50]
+            self.colors[50] = self.colors[52]
+            self.colors[52] = self.colors[48]
+            self.colors[48] = tmp
+        if code == "y":
+            self.rotate("Y")
+            self.rotate("Y")
+            self.rotate("Y")
+        
+        if code == "Z":
+            self.rotate("x")
+            self.rotate("y")
+            self.rotate("X")
+        if code == "z":
+            self.rotate("Z")
+            self.rotate("Z")
+            self.rotate("Z")
+            
+
 if __name__ == "__main__":
-    foo = cube("000000000111111111222222222333333333444444444555555555")
+    foo = cube("123456789123456789123456789123456789123456789123456789")
     foo.prt()
     moves = input()
     for i in moves:
