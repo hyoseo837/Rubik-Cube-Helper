@@ -1,0 +1,21 @@
+creating Solution map
+
+function solution_map (cube, iteration):
+    if iteration >0:
+        map = []
+        for move in possible_moves:
+            new_cube = cube.move
+            add (new_cube,opposing_move) to map
+            add solution_map (new_cube,iteration -1) to map
+        sort map
+        return map
+    else:
+        return none
+
+save map as .txt
+
+
+
+
+
+
