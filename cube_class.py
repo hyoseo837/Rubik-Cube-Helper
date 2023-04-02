@@ -1,4 +1,4 @@
-class cube:
+class Cube:
     
     colors = [];
 
@@ -335,9 +335,37 @@ class cube:
             self.move("Z")
             self.move("Z")
             
+MOVES = ["U","u","D","d","L","l","R","r","F","f","B","b"]
+def counterMove(move):
+    if move == "U":
+        return "u"
+    elif move == "u":
+        return "U"
+    elif move == "D":
+        return "d"
+    elif move == "d":
+        return "D"
+    elif move == "L":
+        return "l"
+    elif move == "l":
+        return "L"
+    elif move == "R":
+        return "r"
+    elif move == "r":
+        return "R"
+    elif move == "F":
+        return "f"
+    elif move == "f":
+        return "F"
+    elif move == "B":
+        return "b"
+    elif move == "b":
+        return "B"
+    else:
+        return None
 
 if __name__ == "__main__":
-    foo = cube("123456789123456789123456789123456789123456789123456789")
+    foo = Cube("123456789123456789123456789123456789123456789123456789")
     foo.prt()
     moves = input()
     for i in moves:

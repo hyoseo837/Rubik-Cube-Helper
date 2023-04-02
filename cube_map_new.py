@@ -1,54 +1,81 @@
-from cube_class import cube
-import math , os, linecache
+from cube_class import Cube,MOVES,counterMove
 
-n = 0;
-moves = ["U","u","D","d","L","l","R","r","F","f","B","b"]
-# kkk = cube()
-# f = open("cmap_new.txt","w")
-# s = kkk.save()+"o\n"
-# f.write(s)
-# f.close()
+def c_write(string):
+    f = open("cmap.txt","a")
+    f.write(string)
+    f.close()
 
+def make_string(element):
+    return element[0] + " " + element[1]+"\n"
 
-def addcube(ccube,move,ans):
-    ccc = cube(ccube.save())
-    ccc.move(moves[move])
-    c = open("cmap_new.txt","r")
-    datas = c.readlines()
-    used = False;
-    while True:
-        f = open("cmap_new.txt","w")
-        for i in datas:
-            s = ccc.save()+" "+moves[ans] + "\n"
-            if i < s:
-                f.write(i)
-            elif i[:54]== s[:54]:
-                f.write(i)
-                used = True
-            else:
-                if not used:
-                    f.write(s)
-                    f.write(i)
-                    used = True
-                else:
-                    f.write(i)
+def make_dict():
+    solution_map = {"000000000111111111222222222333333333444444444555555555":"C"}
+    for i in MOVES:
+        tmpCube = Cube()
+        tmpCube.move(i)
+        opposite_move = counterMove(i)
+        string = tmpCube.save()
+        if string in list(solution_map.keys()):
+            continue
+        solution_map[string]=opposite_move
 
-        if not used:
-            f.write(s)
-        f.close()
-        break;
-    c.close()
-    return;
+    for j in MOVES:
+        for i in MOVES:
+            tmpCube = Cube()
+            tmpCube.move(j)
+            tmpCube.move(i)
+            opposite_move = counterMove(i)
+            string = tmpCube.save()
+            if string in list(solution_map.keys()):
+                continue
+            solution_map[string]=opposite_move
+            
+    for k in MOVES:
+        for j in MOVES:
+            for i in MOVES:
+                tmpCube = Cube()
+                tmpCube.move(k)
+                tmpCube.move(j)
+                tmpCube.move(i)
+                opposite_move = counterMove(i)
+                string = tmpCube.save()
+                if string in list(solution_map.keys()):
+                    continue
+                solution_map[string]=opposite_move
+    for l in MOVES:
+        for k in MOVES:
+            for j in MOVES:
+                for i in MOVES:
+                    tmpCube = Cube()
+                    tmpCube.move(l)
+                    tmpCube.move(k)
+                    tmpCube.move(j)
+                    tmpCube.move(i)
+                    opposite_move = counterMove(i)
+                    string = tmpCube.save()
+                    if string in list(solution_map.keys()):
+                        continue
+                    solution_map[string]=opposite_move
+    for m in MOVES:
+        for l in MOVES:
+            for k in MOVES:
+                for j in MOVES:
+                    for i in MOVES:
+                        tmpCube = Cube()
+                        tmpCube.move(m)
+                        tmpCube.move(l)
+                        tmpCube.move(k)
+                        tmpCube.move(j)
+                        tmpCube.move(i)
+                        opposite_move = counterMove(i)
+                        string = tmpCube.save()
+                        if string in list(solution_map.keys()):
+                            continue
+                        solution_map[string]=opposite_move
 
+    return solution_map
+        
 
-size = int(os.path.getsize("cmap_new.txt")/58)
-print(size)
-for i in range(n,size):
-    dat = linecache.getline("cmap_new.txt", i+1)
-    if dat == "":
-        continue
-    kkk = cube(dat[0:54])
-    for j in range(12):
-        addcube(kkk,j, j+int(math.pow(-1, j)))
-
-
+        
+for i in sorted(make_dict().items()):
+    c_write(make_string(i))
